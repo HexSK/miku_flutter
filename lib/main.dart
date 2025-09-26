@@ -1,44 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+
+import 'widgets/appbar.dart';
+import 'widgets/connection_dialogue.dart';
 
 void main() => runApp(MikuControllerApp());
 
-class MikuControllerApp extends StatelessWidget {
+class MikuControllerApp extends StatefulWidget {
   const MikuControllerApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(home: MikuAppBar());
-  }
+  State<MikuControllerApp> createState() => _MikuControllerAppState();
 }
 
-class MikuAppBar extends StatelessWidget{
-  const MikuAppBar({super.key});
+class _MikuControllerAppState extends State<MikuControllerApp>{
+  String connectionType = '';
 
+  void _setConnectionType(String type){
+    setState(() {
+      connectionType = type;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Image.asset(
-          'assets/miku.png',
-          width:20,
-          height: 20,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: MikuAppBar(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ConnectionDialogue(
+                connectionType: connectionType,
+                onConnectionSelected: _setConnectionType
+              )
+          ],
         ),
-        title: Text('Miku Controller'),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(icon: const Icon(Icons.egg),
-          tooltip: 'MikuMikuBeam!:3',
-          onPressed: () async {
-            final player = AudioPlayer();
-            await player.play(
-              UrlSource(
-                'https://www.myinstants.com/media/sounds/miku-miku-beam.mp3'
-              ) 
-            );
-          }),
-        ],
-      ),
-    );
-  }
+      )
+    ),
+  );
 }
+}
+
