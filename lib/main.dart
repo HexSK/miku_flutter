@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'widgets/appbar.dart';
 import 'widgets/connection_dialogue.dart';
+import 'widgets/usb_controller.dart';
 
 void main() => runApp(MikuControllerApp());
 
@@ -32,12 +33,14 @@ class _MikuControllerAppState extends State<MikuControllerApp>{
               ConnectionDialogue(
                 connectionType: connectionType,
                 onConnectionSelected: _setConnectionType
-              )
-          ],
-        ),
-      )
-    ),
-  );
-}
+              ),
+              if (connectionType == 'usb')
+                const UsbController(),
+            ],
+          ),
+        )
+      ),
+    );
+  }
 }
 
