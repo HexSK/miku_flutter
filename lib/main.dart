@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'widgets/appbar.dart';
 import 'widgets/connection_dialogue.dart';
 import 'widgets/usb_controller.dart';
+import 'widgets/bluetooth_controller.dart';
 
 void main() => runApp(MikuControllerApp());
 
@@ -13,14 +14,15 @@ class MikuControllerApp extends StatefulWidget {
   State<MikuControllerApp> createState() => _MikuControllerAppState();
 }
 
-class _MikuControllerAppState extends State<MikuControllerApp>{
+class _MikuControllerAppState extends State<MikuControllerApp> {
   String connectionType = '';
 
-  void _setConnectionType(String type){
+  void _setConnectionType(String type) {
     setState(() {
       connectionType = type;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,15 +34,17 @@ class _MikuControllerAppState extends State<MikuControllerApp>{
             children: [
               ConnectionDialogue(
                 connectionType: connectionType,
-                onConnectionSelected: _setConnectionType
+                onConnectionSelected: _setConnectionType,
               ),
-              if (connectionType == 'usb')
-                const UsbController(),
+              connectionType == ''
+                  ? const SizedBox.shrink()
+                  : connectionType == 'usb'
+                  ? const UsbController()
+                  : const BluetoothController(),
             ],
           ),
-        )
+        ),
       ),
     );
   }
 }
-
